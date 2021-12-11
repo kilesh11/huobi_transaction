@@ -67,7 +67,7 @@ const placeOrder = async (
     console.dir(`finalQty: ${finalQty}`);
     const body = {
         "account-id": "37909432",
-        amount: "0.6",
+        amount: finalQty,
         price: finalPrice,
         symbol,
         type: "buy-limit"
@@ -120,9 +120,8 @@ const loopFunction = async (
                 if (latestBalance > 20) {
                     return { boughtAll: false, latestBalance };
                 }
-                return { boughtAll: true, latestBalance };
+                return { boughtAll: false, latestBalance };
             }
-            // const return_code = await placeOrder("1", symbol, side, options);
             console.log(`no ${symbol} order book yet`);
             return { boughtAll: false, latestBalance: options.freeUSDT };
         }
@@ -139,7 +138,7 @@ const loopFunction = async (
     console.dir(`Free USDT: ${freeUSDT}`);
     while (!finish) {
         const [{ boughtAll, latestBalance }] = await Promise.all([
-            loopFunction("nearusdt", "Buy", { freeUSDT }),
+            loopFunction("imxusdt", "Buy", { freeUSDT }),
             timeout(2200)
         ]);
         finish = boughtAll;
